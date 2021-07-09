@@ -1,0 +1,636 @@
+{
+  "Resources": {
+    "sandboxeip": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "purpose",
+            "Value": "Elastic IP for Nat Gateway"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-eip"
+      }
+    },
+    "sandboxvpc65026B82": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "EnableDnsHostnames": true,
+        "EnableDnsSupport": true,
+        "InstanceTenancy": "default",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/Resource"
+      }
+    },
+    "sandboxvpcPublicSubnet1Subnet89B3A60C": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/18",
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet1/Subnet"
+      }
+    },
+    "sandboxvpcPublicSubnet1RouteTable3F362CB4": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet1/RouteTable"
+      }
+    },
+    "sandboxvpcPublicSubnet1RouteTableAssociation3F4EF605": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPublicSubnet1RouteTable3F362CB4"
+        },
+        "SubnetId": {
+          "Ref": "sandboxvpcPublicSubnet1Subnet89B3A60C"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet1/RouteTableAssociation"
+      }
+    },
+    "sandboxvpcPublicSubnet1DefaultRoute51888059": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPublicSubnet1RouteTable3F362CB4"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "sandboxvpcIGW95934751"
+        }
+      },
+      "DependsOn": [
+        "sandboxvpcVPCGWC5312AD5"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet1/DefaultRoute"
+      }
+    },
+    "sandboxvpcPublicSubnet1EIPD5BC066B": {
+      "Type": "AWS::EC2::EIP",
+      "Properties": {
+        "Domain": "vpc",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet1/EIP"
+      }
+    },
+    "sandboxvpcPublicSubnet1NATGateway002E998B": {
+      "Type": "AWS::EC2::NatGateway",
+      "Properties": {
+        "SubnetId": {
+          "Ref": "sandboxvpcPublicSubnet1Subnet89B3A60C"
+        },
+        "AllocationId": {
+          "Fn::GetAtt": [
+            "sandboxeip",
+            "AllocationId"
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PublicSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet1/NATGateway"
+      }
+    },
+    "sandboxvpcPublicSubnet2Subnet763B0E89": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.64.0/18",
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": true,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Public"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Public"
+          },
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet2/Subnet"
+      }
+    },
+    "sandboxvpcPublicSubnet2RouteTableE0244591": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PublicSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet2/RouteTable"
+      }
+    },
+    "sandboxvpcPublicSubnet2RouteTableAssociationE6D1EF8F": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPublicSubnet2RouteTableE0244591"
+        },
+        "SubnetId": {
+          "Ref": "sandboxvpcPublicSubnet2Subnet763B0E89"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet2/RouteTableAssociation"
+      }
+    },
+    "sandboxvpcPublicSubnet2DefaultRoute5472DB86": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPublicSubnet2RouteTableE0244591"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {
+          "Ref": "sandboxvpcIGW95934751"
+        }
+      },
+      "DependsOn": [
+        "sandboxvpcVPCGWC5312AD5"
+      ],
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PublicSubnet2/DefaultRoute"
+      }
+    },
+    "sandboxvpcPrivateSubnet1Subnet5860B2FF": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.128.0/18",
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            0,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PrivateSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet1/Subnet"
+      }
+    },
+    "sandboxvpcPrivateSubnet1RouteTableDDE68089": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PrivateSubnet1"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet1/RouteTable"
+      }
+    },
+    "sandboxvpcPrivateSubnet1RouteTableAssociationA14EB130": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPrivateSubnet1RouteTableDDE68089"
+        },
+        "SubnetId": {
+          "Ref": "sandboxvpcPrivateSubnet1Subnet5860B2FF"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet1/RouteTableAssociation"
+      }
+    },
+    "sandboxvpcPrivateSubnet1DefaultRoute6E243F07": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPrivateSubnet1RouteTableDDE68089"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "sandboxvpcPublicSubnet1NATGateway002E998B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet1/DefaultRoute"
+      }
+    },
+    "sandboxvpcPrivateSubnet2Subnet0F41C165": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "CidrBlock": "10.0.192.0/18",
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "AvailabilityZone": {
+          "Fn::Select": [
+            1,
+            {
+              "Fn::GetAZs": ""
+            }
+          ]
+        },
+        "MapPublicIpOnLaunch": false,
+        "Tags": [
+          {
+            "Key": "aws-cdk:subnet-name",
+            "Value": "Private"
+          },
+          {
+            "Key": "aws-cdk:subnet-type",
+            "Value": "Private"
+          },
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PrivateSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet2/Subnet"
+      }
+    },
+    "sandboxvpcPrivateSubnet2RouteTable437BF761": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc/PrivateSubnet2"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet2/RouteTable"
+      }
+    },
+    "sandboxvpcPrivateSubnet2RouteTableAssociationBCD03114": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPrivateSubnet2RouteTable437BF761"
+        },
+        "SubnetId": {
+          "Ref": "sandboxvpcPrivateSubnet2Subnet0F41C165"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet2/RouteTableAssociation"
+      }
+    },
+    "sandboxvpcPrivateSubnet2DefaultRoute0C8290C4": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "RouteTableId": {
+          "Ref": "sandboxvpcPrivateSubnet2RouteTable437BF761"
+        },
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "NatGatewayId": {
+          "Ref": "sandboxvpcPublicSubnet1NATGateway002E998B"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/PrivateSubnet2/DefaultRoute"
+      }
+    },
+    "sandboxvpcIGW95934751": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": "sandbox-network/sandbox-vpc"
+          }
+        ]
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/IGW"
+      }
+    },
+    "sandboxvpcVPCGWC5312AD5": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "VpcId": {
+          "Ref": "sandboxvpc65026B82"
+        },
+        "InternetGatewayId": {
+          "Ref": "sandboxvpcIGW95934751"
+        }
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/sandbox-vpc/VPCGW"
+      }
+    },
+    "CDKMetadata": {
+      "Type": "AWS::CDK::Metadata",
+      "Properties": {
+        "Analytics": "v2:deflate64:H4sIAAAAAAAAE0WPwQrCMAyGn8V7rVbwrgwRPciY4j3LItZtrbSpImPvbufUnvLl789HqqRSSs4nK3j6KVb1rEPrSHZHBqxFQd4GhyQyazy7gCyyi0npxcSHSrO2pheDgXAhuxhvdrk433FonPNM5KFsNB5DaehjSFTYwHSCsqGUp2ztvUUNg/9fHuAAvAWmJ7xE7vQjYjLuDJOL/CuMJ3y3Ncd/XVsy3PdiDw+YqaWcSzW5ea2nLhjWLclinG8FNZ81HAEAAA=="
+      },
+      "Metadata": {
+        "aws:cdk:path": "sandbox-network/CDKMetadata/Default"
+      },
+      "Condition": "CDKMetadataAvailable"
+    }
+  },
+  "Conditions": {
+    "CDKMetadataAvailable": {
+      "Fn::Or": [
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "af-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-northeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ap-southeast-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "ca-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "cn-northwest-1"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-central-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-north-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-2"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "eu-west-3"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "me-south-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "sa-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-east-2"
+              ]
+            }
+          ]
+        },
+        {
+          "Fn::Or": [
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-1"
+              ]
+            },
+            {
+              "Fn::Equals": [
+                {
+                  "Ref": "AWS::Region"
+                },
+                "us-west-2"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
