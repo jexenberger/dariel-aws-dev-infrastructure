@@ -1,0 +1,3 @@
+{
+  "app": "mvn exec:java -Dexec.mainClass=za.co.dariel.aws.EnvironmentApp"
+}
