@@ -3,7 +3,7 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>za.co.dariel.aws</groupId>
-    <artifactId>dariel-sandbox-infrastructure</artifactId>
+    <artifactId>dariel-aws-dev-infrastructure</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <build>
         <plugins>
